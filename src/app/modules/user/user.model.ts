@@ -9,6 +9,10 @@ const userSchema = new Schema<IUser, IUserModel>({
         type:String,
         required:true
     },
+    profileImage:{
+        type:String,
+        required:false,
+    },
     email:{
         type:String,
         required:true,

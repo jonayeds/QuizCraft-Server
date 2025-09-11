@@ -5,6 +5,7 @@ const registerUserValidationSchema = z.object({
     email: z.string().email({ message: "Invalid email" }),
     username: z.string().regex(/^[a-z0-9_.-]+$/, { message: "Username can only include lowercase letters, numbers, '_', '-', and '.'" }),
     password: z.string({ message: "Password is required" }),
+    profileImage:z.string().url({message:"Profile image must be a valid URL"}).optional()  
 })
 
 
