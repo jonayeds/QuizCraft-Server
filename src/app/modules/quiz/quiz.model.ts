@@ -7,20 +7,16 @@ const quizSchema = new Schema<IQuiz>({
         ref:"User",
         required:true
     },  
-    participant:{   
-        type:Schema.Types.ObjectId, 
-        ref:"User",
+    joiningCode:{
+        type:String,
+        required:true,
+        unique:true
     },
     totalScore:{
         type:Number,
         required:true,
         default:100
         },
-    quizStatus:{
-        type:String,
-        enum:["pending", "accepted", "rejected"],
-        default:"pending"
-    }
 },{
     timestamps:true 
 })
