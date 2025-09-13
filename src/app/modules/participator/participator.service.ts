@@ -8,6 +8,10 @@ const createParticipator = async(payload:{joiningCode: string}, user:IReqUser) =
     if(!isQuizExist){
         throw new AppError( 404,"Quiz not found")   
     } 
+    const isAlreadyParticipated = await Participator.findOne({player:user._id, quiz:isQuizExist._id})   
+    if(isAlreadyParticipated){
+        throw new AppError(400,"You have already joined this quiz")   
+    } 
     const result  = await Participator.create({player:user._id, quiz:isQuizExist._id})
     return result
 }
