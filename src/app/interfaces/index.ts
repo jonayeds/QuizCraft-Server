@@ -2,10 +2,10 @@ import { Request } from "express";
 import { IUser } from "../modules/user/user.interface";
 
 import { TUserRole } from "../modules/user/user.interface";
+import { Types } from "mongoose";
 
-export interface IReqUser {
-    email:string;
-    role:TUserRole;
+export interface IReqUser extends IUser {
+    _id: Types.ObjectId;
 }
 
 export interface ICustomRequest extends Request{
