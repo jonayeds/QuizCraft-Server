@@ -1,5 +1,5 @@
 import express from "express";  
-import { QuizController } from "./quize.controller";
+import { QuizController } from "./quiz.controller";
 import { auth } from "../../middlewares/auth";
 import { roles } from "../user/user.constant";
 
