@@ -1,5 +1,6 @@
 import { IReqUser } from "../../interfaces";
 import { AppError } from "../../utils/appError";
+import { Participator } from "../participator/participator.model";
 import { User } from "../user/user.model";
 import { IQuiz } from "./quiz.interface";
 import { Quiz } from "./quiz.model";
@@ -27,6 +28,40 @@ const result = await Quiz.create({ ...quizData, creator: isUserExists._id });
   return result;
 };
 
+const getMyQuizzes = async(user:IReqUser)=>{
+    const result = await Participator.aggregate([
+      {
+        $match: { player: user._id}
+      },
+      {
+        $lookup:{
+            from:"quizzes", 
+            localField:"quiz",
+            foreignField:"_id",
+            as:"quizDetails"
+        }
+      },
+      {
+        $unwind:"$quizDetails"
+      },
+      {
+        $project: {
+          _id: "$quizDetails._id",
+          title: "$quizDetails.title",
+          description: "$quizDetails.description",
+          totalScore: "$quizDetails.totalScore",
+          joiningCode: "$quizDetails.joiningCode",
+          creator: "$quizDetails.creator",
+          createdAt: "$quizDetails.createdAt",
+          updatedAt: "$quizDetails.updatedAt"
+        }
+    }
+    ])
+    return result 
+    
+}
+
 export const QuizService = {
   createQuiz,
+  getMyQuizzes
 };
