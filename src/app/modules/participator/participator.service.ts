@@ -1,5 +1,7 @@
 import { IReqUser } from "../../interfaces"
 import { AppError } from "../../utils/appError"
+import { Question } from "../question/question.model"
+import { IQuiz } from "../quiz/quiz.interface"
 import { Quiz } from "../quiz/quiz.model"
 import { Participator } from "./participator.model"
 
@@ -25,7 +27,44 @@ const getQuizParticipators = async(quizId:string, user:IReqUser)=>{
     return result    
 }
 
+const submitAnswares  = async(quizId:string, user:IReqUser, answers:{questionId:string, answer:number}[])=>{
+    const isParticipatorExist = await Participator.findOne({player:user._id, quiz:quizId}).populate("quiz")
+    if(!isParticipatorExist){
+        throw new AppError(403, "You haven't participated in this quiz")
+    }         
+    if(isParticipatorExist.isCompleted){
+        throw new AppError(400, "You have already submitted this quiz")
+    }
+
+    const allQuestions = await Question.find({
+        quiz: quizId,
+    })
+
+    let rightAnswersCount = 0;
+    answers.forEach(ans =>{
+        const question = allQuestions.find(q => q._id.toString() === ans.questionId)
+        if(!question){
+            throw new AppError(400, "Invalid question ID")
+        }
+        if(question.correctAnswerIndex === ans.answer){
+            rightAnswersCount += 1;
+        }
+    })
+
+    const totalScore = (isParticipatorExist.quiz as unknown as IQuiz).totalScore
+    const score = (rightAnswersCount / allQuestions.length) * totalScore;    
+    const result = await Participator.findByIdAndUpdate(isParticipatorExist._id,{
+        score,
+        isCompleted:true
+    }, {new:true})   
+
+    return result
+
+      
+}
+
 export const ParticipatorService= {
     createParticipator,
-    getQuizParticipators
+    getQuizParticipators,
+    submitAnswares  
 }

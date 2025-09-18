@@ -14,9 +14,18 @@ const questionSchema = new Schema<IQuestion>({
         type: Number,
         required: true
     },
-    category: {
-        type: String,
+    topic: {
+        type: Schema.Types.ObjectId,
+        ref: "Topic",
         required: true
+    },
+    quiz:{
+        type:Schema.Types.ObjectId,
+        ref:"Quiz",
+        required:true
+    },
+    description:{
+        type:String
     }
 }, {
     timestamps:true

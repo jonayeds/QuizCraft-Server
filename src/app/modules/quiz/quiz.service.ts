@@ -3,6 +3,7 @@ import { AppError } from "../../utils/appError";
 import { AiAssistant } from "../../utils/generateQuestions";
 
 import { Participator } from "../participator/participator.model";
+import { Question } from "../question/question.model";
 import { Topic } from "../topic/topic.model";
 import { User } from "../user/user.model";
 import { IQuiz } from "./quiz.interface";
@@ -68,6 +69,10 @@ const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:st
   if(!topic){
     throw new AppError(404, "Topic not found"); 
   }
+  const questionsCount = await Question.countDocuments({quiz:quiz._id})
+  if(questionsCount > 0){
+    throw new AppError(400, "Questions have already been generated for this quiz");
+  } 
 
   if(!payload?.number){
     payload.number = 10
@@ -77,10 +82,17 @@ const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:st
   
   const questions = await AiAssistant.generateQuestions(topic.title, count)
   const limitedQuestions = questions?.slice(0, payload.number)  
-  return limitedQuestions; 
 
-
-
+  const questionsData = limitedQuestions.map(q=> ({
+    questionText: q.question,
+    options: q.options,
+    correctAnswerIndex: q.correctAnswer,
+    topic: topic._id,
+    quiz: quiz._id,
+    description: q.description
+  }))
+  const result = await Question.insertMany(questionsData)
+  return result; 
 }
 
 export const QuizService = {
