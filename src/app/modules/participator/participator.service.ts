@@ -19,11 +19,11 @@ const createParticipator = async(payload:{joiningCode: string}, user:IReqUser) =
 }
 
 const getQuizParticipators = async(quizId:string, user:IReqUser)=>{
-    const isParticipatorExist = await Participator.findOne({player:user._id, quiz:quizId})
-    if(!isParticipatorExist){
+    const isQuizExist = await Quiz.findOne({ _id: quizId , creator: user._id})
+    if(!isQuizExist){
         throw new AppError(403, "You are not authorized to view this resource")
     }           
-    const result = await Participator.find({quiz:quizId})
+    const result = await Participator.find({quiz:isQuizExist._id})
     return result    
 }
 
