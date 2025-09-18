@@ -23,7 +23,18 @@ const getMyQuizzes = catchAsync(async (req:ICustomRequest,res)=>{
     })
 })
 
+const getMyCreatedQuizzes = catchAsync(async (req:ICustomRequest,res)=>{
+    const result = await QuizService.getMyCreatedQuizzes(req.user as IReqUser)
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Quizzes retrieved successfully",
+        data: result
+    })
+})
+
 export const QuizController = {
     createQuiz,
-    getMyQuizzes
+    getMyQuizzes,
+    getMyCreatedQuizzes
 }

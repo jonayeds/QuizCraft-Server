@@ -38,30 +38,23 @@ const getMyQuizzes = async(user:IReqUser)=>{
             from:"quizzes", 
             localField:"quiz",
             foreignField:"_id",
-            as:"quizDetails"
+            as:"quiz"
         }
       },
       {
-        $unwind:"$quizDetails"
+        $unwind:"$quiz"
       },
-      {
-        $project: {
-          _id: "$quizDetails._id",
-          title: "$quizDetails.title",
-          description: "$quizDetails.description",
-          totalScore: "$quizDetails.totalScore",
-          joiningCode: "$quizDetails.joiningCode",
-          creator: "$quizDetails.creator",
-          createdAt: "$quizDetails.createdAt",
-          updatedAt: "$quizDetails.updatedAt"
-        }
-    }
     ])
     return result 
-    
+}
+
+const getMyCreatedQuizzes = async(user:IReqUser)=>{
+  const result = await Quiz.find({creator:user._id})
+  return result
 }
 
 export const QuizService = {
   createQuiz,
-  getMyQuizzes
+  getMyQuizzes,
+  getMyCreatedQuizzes
 };
