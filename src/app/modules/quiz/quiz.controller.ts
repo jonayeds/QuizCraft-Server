@@ -33,8 +33,19 @@ const getMyCreatedQuizzes = catchAsync(async (req:ICustomRequest,res)=>{
     })
 })
 
+const generateQuestions = catchAsync(async (req:ICustomRequest,res)=>{
+    const result = await QuizService.generateQuestions(req.params.quizId, req.user!, req.body)
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Questions generated successfully",
+        data: result
+    })
+})
+
 export const QuizController = {
     createQuiz,
     getMyQuizzes,
-    getMyCreatedQuizzes
+    getMyCreatedQuizzes,
+    generateQuestions
 }

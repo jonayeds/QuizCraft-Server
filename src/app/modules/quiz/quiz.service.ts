@@ -53,8 +53,20 @@ const getMyCreatedQuizzes = async(user:IReqUser)=>{
   return result
 }
 
+const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:string}) => {
+  const quiz = await Quiz.findOne({
+    _id: quizeId,
+    creator: user._id 
+  });
+  if(!quiz) {
+    throw new AppError(404, "Quiz not found");
+  } 
+  
+}
+
 export const QuizService = {
   createQuiz,
   getMyQuizzes,
-  getMyCreatedQuizzes
+  getMyCreatedQuizzes,
+  generateQuestions
 };

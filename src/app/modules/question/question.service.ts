@@ -1,7 +1,6 @@
 import { IReqUser } from "../../interfaces";
 import { AppError } from "../../utils/appError";
 import { Participator } from "../participator/participator.model";
-import { IQuiz } from "../quiz/quiz.interface";
 import { Quiz } from "../quiz/quiz.model";
 import { Question } from "./question.model";
 
