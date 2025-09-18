@@ -1,5 +1,7 @@
 import { IReqUser } from "../../interfaces";
 import { AppError } from "../../utils/appError";
+import { AiAssistant } from "../../utils/generateQuestions";
+
 import { Participator } from "../participator/participator.model";
 import { Topic } from "../topic/topic.model";
 import { User } from "../user/user.model";
@@ -67,7 +69,10 @@ const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:st
     throw new AppError(404, "Topic not found"); 
   }
 
-  
+  const questions = await AiAssistant.generateQuestions(topic.title)
+  return questions
+
+
 
 }
 
