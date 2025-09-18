@@ -56,7 +56,7 @@ const getMyCreatedQuizzes = async(user:IReqUser)=>{
   return result
 }
 
-const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:string}) => {
+const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:string, number:number}) => {
   const quiz = await Quiz.findOne({
     _id: quizeId,
     creator: user._id 
@@ -69,8 +69,15 @@ const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:st
     throw new AppError(404, "Topic not found"); 
   }
 
-  const questions = await AiAssistant.generateQuestions(topic.title)
-  return questions
+  if(!payload?.number){
+    payload.number = 10
+  }
+
+  const count = payload.number+2
+  
+  const questions = await AiAssistant.generateQuestions(topic.title, count)
+  const limitedQuestions = questions?.slice(0, payload.number)  
+  return limitedQuestions; 
 
 
 
