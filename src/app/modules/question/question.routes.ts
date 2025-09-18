@@ -5,6 +5,6 @@ import { roles } from "../user/user.constant";
 const router = express.Router() 
 
 
-router.get("/get-quize-questions/:quizId",auth(roles.user),  QuestionController.getQuizQuestions )
+router.get("/get-quiz-questions/:quizId",auth(roles.user),  QuestionController.getQuizQuestions )
 
 export const QuestionRoutes = router;
