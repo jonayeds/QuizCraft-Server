@@ -24,7 +24,7 @@ const getQuizParticipators = catchAsync(async(req, res)=>{
 })
 
 const submitAnswares = catchAsync(async(req, res)=>{
-    const result = await ParticipatorService.submitAnswares(req.params.quizId, req.user as IReqUser, req.body)
+    const result = await ParticipatorService.submitAnswares(req.params.quizId, req.user as IReqUser, req.body.answers)
     sendResponse(res, {
         statusCode:200,
         success:true,   
