@@ -15,6 +15,8 @@ const registerUser = async (payload: IUser) => {
       `User with same ${isUserExists.property} Already exists`
     );
   }
+
+  payload.role = "PLAYER";
   
   const result = await User.create(payload);
   const jwtPayload = {

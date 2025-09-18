@@ -4,6 +4,7 @@ import { AuthRoutes } from "../modules/auth/auth.routes";
 import { QuizRoutes } from "../modules/quiz/quiz.routes";
 import { ParticipatorRoutes } from "../modules/participator/participator.routes";
 import { QuestionRoutes } from "../modules/question/question.routes";
+import { TopicRoutes } from "../modules/topic/topic.routes";
 
 
 
@@ -29,6 +30,10 @@ const moduleRoutes = [
     {
         path:"/question",
         routes:QuestionRoutes
+    },
+    {
+        path:"/topic",
+        routes:TopicRoutes
     },
 
 ]

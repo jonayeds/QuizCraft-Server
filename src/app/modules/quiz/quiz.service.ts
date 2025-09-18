@@ -1,6 +1,7 @@
 import { IReqUser } from "../../interfaces";
 import { AppError } from "../../utils/appError";
 import { Participator } from "../participator/participator.model";
+import { Topic } from "../topic/topic.model";
 import { User } from "../user/user.model";
 import { IQuiz } from "./quiz.interface";
 import { Quiz } from "./quiz.model";
@@ -61,7 +62,13 @@ const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:st
   if(!quiz) {
     throw new AppError(404, "Quiz not found");
   } 
+  const topic = await Topic.findById(payload.topic)
+  if(!topic){
+    throw new AppError(404, "Topic not found"); 
+  }
+
   
+
 }
 
 export const QuizService = {
