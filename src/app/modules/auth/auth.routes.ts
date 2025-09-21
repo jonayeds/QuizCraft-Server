@@ -8,5 +8,6 @@ import { AuthControllers } from "./auth.controller";
 const router = Router()
 
 router.post("/login", validateRequest(AuthValidations.loginUserValidationSchema), AuthControllers.loginUser)
+router.post("/social-login", validateRequest(AuthValidations.socialLoginValidationSchema), AuthControllers.socialLogin)
 
 export const AuthRoutes = router

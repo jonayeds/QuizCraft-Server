@@ -33,9 +33,20 @@ const submitAnswares = catchAsync(async(req, res)=>{
     })
 })
 
+const getMyQuizParticipation = catchAsync(async(req, res)=>{
+    const result = await ParticipatorService.getMyQuizParticipation(req.params.quizId, req.user as IReqUser)
+    sendResponse(res, {
+        statusCode:200,
+        success:true,   
+        message:"Quiz participation retrieved successfully",
+        data:result
+    })
+})
+
 
 export const ParticipatorController = {
     createParticipator,
     getQuizParticipators,
-    submitAnswares
+    submitAnswares,
+    getMyQuizParticipation
 }

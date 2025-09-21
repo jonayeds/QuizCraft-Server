@@ -43,9 +43,20 @@ const generateQuestions = catchAsync(async (req:ICustomRequest,res)=>{
     })
 })
 
+const getASingleQuiz = catchAsync(async (req:ICustomRequest,res)=>{
+    const result = await QuizService.getASingleQuiz(req.params.quizId, req.user!)
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: "Quiz retrieved successfully",
+        data: result
+    })
+})
+
 export const QuizController = {
     createQuiz,
     getMyQuizzes,
     getMyCreatedQuizzes,
+    getASingleQuiz,
     generateQuestions
 }

@@ -13,7 +13,17 @@ const createTopic = catchAsync(async(req :ICustomRequest , res )=>{
         data: result
     })
 })
+const getAllTopics = catchAsync(async(req :ICustomRequest , res )=>{
+    const result = await TopicService.getAllTopics()
+    sendResponse(res,{
+        statusCode:200,
+        success:true,
+        message:"Topics retrieved successfully",
+        data: result
+    })
+})
 
 export const TopicController = {
-    createTopic
+    createTopic,
+    getAllTopics
 }

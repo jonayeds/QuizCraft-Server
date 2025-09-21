@@ -17,6 +17,11 @@ router.get(
   auth(roles.user),
   ParticipatorController.getQuizParticipators
 );
+router.get(
+  "/my-participation/:quizId",
+  auth(roles.user),
+  ParticipatorController.getMyQuizParticipation
+);
 router.patch(
   "/submit/:quizId",
   auth(roles.user),

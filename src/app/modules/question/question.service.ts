@@ -11,8 +11,14 @@ const getQuizQuestions= async(quizId:string, user:IReqUser)=>{
         throw new AppError(403, "You are not Participating or creator of this quiz");
     }
 
-    const result = await Question.find({ quiz: quizId });
-    return result;
+    if(isParticipatorExists?.isCompleted){
+        const result = await Question.find({ quiz: quizId });
+        return result;  
+    }else{
+        const result = await Question.find({ quiz: quizId }).select("-correctAnswerIndex -__v -description");
+        return result;
+    }
+
 }
 
 export const QuestionService = {

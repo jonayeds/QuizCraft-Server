@@ -23,7 +23,7 @@ const getQuizParticipators = async(quizId:string, user:IReqUser)=>{
     if(!isQuizExist){
         throw new AppError(403, "You are not authorized to view this resource")
     }           
-    const result = await Participator.find({quiz:isQuizExist._id})
+    const result = await Participator.find({quiz:isQuizExist._id}).populate("player").sort({score:-1})
     return result    
 }
 
@@ -52,9 +52,9 @@ const submitAnswares  = async(quizId:string, user:IReqUser, answers:{questionId:
     })
 
     const totalScore = (isParticipatorExist.quiz as unknown as IQuiz).totalScore
-    const score = (rightAnswersCount / allQuestions.length) * totalScore;    
+    const score = Math.round((rightAnswersCount / allQuestions.length) * totalScore * 100) / 100;    
     const result = await Participator.findByIdAndUpdate(isParticipatorExist._id,{
-        score,
+         score,
         isCompleted:true
     }, {new:true})   
 
@@ -63,8 +63,14 @@ const submitAnswares  = async(quizId:string, user:IReqUser, answers:{questionId:
       
 }
 
+const getMyQuizParticipation = async(quizId:string, user:IReqUser)=>{
+    const result = await Participator.findOne({player:user._id, quiz:quizId})
+    return result
+}
+
 export const ParticipatorService= {
     createParticipator,
     getQuizParticipators,
-    submitAnswares  
+    submitAnswares,
+    getMyQuizParticipation
 }

@@ -95,9 +95,25 @@ const generateQuestions = async(quizeId:string, user:IReqUser, payload:{topic:st
   return result; 
 }
 
+const getASingleQuiz = async(quizId:string, user:IReqUser) =>{
+  const quiz = await Quiz.findOne({_id:quizId, creator:user._id})
+  if(!quiz) throw new AppError(404, "Quiz not found")
+    const isQuestionsGenerated = await Question.findOne({quiz:quiz._id})
+  let isGenerated = false
+  if(isQuestionsGenerated){
+    isGenerated = true
+  }else{
+    isGenerated = false
+  }
+  const quizData: IQuiz &{questionsGenerated?:boolean} = {...quiz.toObject(), questionsGenerated:isGenerated}
+
+  return quizData
+}
+
 export const QuizService = {
   createQuiz,
   getMyQuizzes,
   getMyCreatedQuizzes,
-  generateQuestions
+  generateQuestions,
+  getASingleQuiz
 };

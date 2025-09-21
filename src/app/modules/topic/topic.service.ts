@@ -10,7 +10,13 @@ const createTopic  = async (payload: {title:string}) => {
     return result  
 }
 
+const getAllTopics = async()=>{
+    const result = await Topic.find()
+    return result   
+}
+
 
 export const TopicService = {
-    createTopic
+    createTopic,
+    getAllTopics
 }

@@ -7,7 +7,11 @@ import { catchAsync } from "../utils/catchAsync";
 import jwt, { JwtPayload } from "jsonwebtoken"
 export const auth = (...requiredRoles:TUserRole[])=>{
     return catchAsync(async(req, res, next)=>{
-        const token = req.headers.authorization   
+        let token = req.headers.authorization;
+        if (!token) {
+            token = req.cookies?.accessToken;
+        }
+        
         if(!token){
             throw new AppError(403,"You are not Authorized")
         } 
