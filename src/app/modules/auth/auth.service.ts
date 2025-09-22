@@ -37,9 +37,6 @@ const socialLogin = async (payload: {
     identification: payload.email,
   });
   if (!isUserExists) {
-    const hashedPassword = await hashPassword(
-      config.default_password as string
-    );
     let username = payload.email.split("@")[0];
     while (true) {
       const existingUser = await User.findOne({ username });
@@ -49,7 +46,7 @@ const socialLogin = async (payload: {
     const userData: IUser = {
       email: payload.email,
       name: payload.name,
-      password: hashedPassword,
+      password: config.default_password as string,
       username,
       profileImage: payload.image,
       role: "PLAYER",
@@ -61,15 +58,16 @@ const socialLogin = async (payload: {
     };
     const accessToken = signJwt(jwtPayload, config.access_secret as string);
     return { accessToken, data: newUser };
-  }else{
+  } else {
     const jwtPayload = {
-        email: isUserExists.user.email,
-        role: isUserExists.user.role,
-      };
-      const accessToken = signJwt(jwtPayload, config.access_secret as string);
-      return { accessToken, data: isUserExists.user };
-    }
+      email: isUserExists.user.email,
+      role: isUserExists.user.role,
+    };
+    const accessToken = signJwt(jwtPayload, config.access_secret as string);
+
+    return { accessToken, data: isUserExists.user };
   }
+};
 
 export const AuthServices = {
   loginUser,
