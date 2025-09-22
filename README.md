@@ -2,6 +2,9 @@
 
 A powerful TypeScript Express.js backend API for the QuizCraft platform - an intelligent quiz creation and management system with AI-powered question generation.
 
+## Live Link
+<a href="https://quizcraft-client.vercel.app/">Demo</a>
+
 ## 🚀 Features
 
 ### 🔐 Authentication & Authorization
@@ -12,33 +15,20 @@ A powerful TypeScript Express.js backend API for the QuizCraft platform - an int
 
 ### 🧠 AI-Powered Quiz Generation
 - **Groq AI integration** for intelligent question generation
-- **Topic-based question creation** with customizable difficulty levels
 - **Automatic answer validation** and scoring systems
-- **Dynamic quiz content** generation based on user preferences
 
 ### 📊 Quiz Management
-- **Create, read, update, delete quizzes** with full CRUD operations
+- **Create quizzes** with custom score
 - **Joining code system** for easy quiz participation
-- **Real-time quiz participation** tracking
+- **quiz participation** tracking
 - **Automatic scoring and leaderboard** generation
 - **Quiz analytics** and performance insights
-
-### 👥 User Management
-- **User profiles** with customizable information
 - **Quiz history tracking** for created and participated quizzes
-- **Performance analytics** and progress tracking
-- **Admin dashboard** capabilities
-
-### 🏷️ Topic Management
-- **Dynamic topic categories** for organized quiz creation
-- **Topic-based filtering** and search functionality
-- **Admin controls** for topic management
-
-### 📈 Participation System
-- **Real-time participation tracking** with completion status
 - **Score calculation** and ranking systems
 - **Detailed answer analytics** and review capabilities
-- **Export functionality** for quiz results
+
+### 🏷️ Topic Management
+- **Admin controls** for topic Creation
 
 ## 🛠️ Tech Stack
 
@@ -132,15 +122,10 @@ Make sure you have the following installed:
 
 4. **Set up MongoDB:**
    
-   **Option A: MongoDB Atlas (Recommended)**
+   ** MongoDB Atlas **
    - Create account at [MongoDB Atlas](https://www.mongodb.com/atlas)
    - Create a new cluster
    - Get connection string and update `DATABASE_URI` in `.env`
-   
-   **Option B: Local MongoDB**
-   - Install MongoDB locally
-   - Start MongoDB service
-   - Update `DATABASE_URI` to `mongodb://localhost:27017/QuizCraft`
 
 5. **Get Groq API Key:**
    - Visit [Groq Console](https://console.groq.com/)
@@ -176,66 +161,48 @@ The server will start on `http://localhost:8000` by default.
 ### 🔐 Authentication Routes
 ```
 POST   /api/v1/auth/login           # User login
-POST   /api/v1/auth/logout          # User logout
-POST   /api/v1/auth/refresh         # Refresh JWT token
+POST   /api/v1/auth/social-login    # Social login
 ```
 
 ### 👥 User Routes
 ```
 POST   /api/v1/user/register        # User registration
-GET    /api/v1/user/profile         # Get user profile
-PUT    /api/v1/user/profile         # Update user profile
-GET    /api/v1/user/:id             # Get user by ID
+GET    /api/v1/user/get-me          # Get user profile
 ```
 
 ### 🎯 Quiz Routes
 ```
-POST   /api/v1/quiz/create          # Create new quiz
-GET    /api/v1/quiz/my-created      # Get user's created quizzes
-GET    /api/v1/quiz/my-joined       # Get user's joined quizzes
-GET    /api/v1/quiz/:id             # Get quiz by ID
-PUT    /api/v1/quiz/:id             # Update quiz
-DELETE /api/v1/quiz/:id             # Delete quiz
-POST   /api/v1/quiz/join            # Join quiz with code
-POST   /api/v1/quiz/:id/submit      # Submit quiz answers
-GET    /api/v1/quiz/:id/participants # Get quiz participants
+POST   /api/v1/quiz/create-quiz                   # Create new quiz
+GET    /api/v1/quiz/my-created-quizzes            # Get user's created quizzes
+GET    /api/v1/quiz/my-quizzes                    # Get user's joined quizzes
+GET    /api/v1/quiz//single-quiz/:quizId          # Get quiz by ID
+POST   /api/v1/quiz/generate-questions/:quizId    # Generate quiz questions
 ```
 
 ### ❓ Question Routes
 ```
-GET    /api/v1/question/quiz/:id    # Get questions for quiz
-POST   /api/v1/question/generate    # Generate AI questions
-PUT    /api/v1/question/:id         # Update question
-DELETE /api/v1/question/:id         # Delete question
+GET    /api/v1/question/get-quiz-questions/:quizId    # Get questions for quiz
+```
+
+### ❓ Participator Routes
+```
+GET    /api/v1/participator/join-quiz                   # Join Quiz
+GET    /api/v1/participator/:quizId                     # Get Quiz participators
+GET    /api/v1/participator/my-participation/:quizId    # User's  participated Quizzes
+POST    /api/v1/participator/submit/:quizId             # Submit Answers
 ```
 
 ### 🏷️ Topic Routes
 ```
 GET    /api/v1/topic               # Get all topics
 POST   /api/v1/topic/create-topic   # Create new topic (Admin)
-PUT    /api/v1/topic/:id           # Update topic (Admin)
-DELETE /api/v1/topic/:id           # Delete topic (Admin)
 ```
 
 ## 🧪 Testing the API
 
-**Using curl:**
-```bash
-# Register a new user
-curl -X POST http://localhost:8000/api/v1/user/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"John Doe","email":"john@example.com","password":"password123"}'
-
-# Login
-curl -X POST http://localhost:8000/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"john@example.com","password":"password123"}'
-```
-
 **Using Postman:**
-1. Import the API collection (if available)
-2. Set base URL to `http://localhost:8000/api/v1`
-3. Add authentication tokens to headers as needed
+1. Set base URL to `http://localhost:8000/api/v1`
+2. Add authentication tokens to headers as needed
 
 ## 🔧 Environment Variables
 
@@ -272,30 +239,6 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
    - Go to your project settings
    - Add all environment variables from your `.env` file
 
-### Railway Deployment
-
-1. **Connect your GitHub repository**
-2. **Add environment variables**
-3. **Deploy automatically on push**
-
-### Heroku Deployment
-
-1. **Create Heroku app:**
-   ```bash
-   heroku create your-app-name
-   ```
-
-2. **Set environment variables:**
-   ```bash
-   heroku config:set DATABASE_URI=your-mongodb-uri
-   heroku config:set JWT_ACCESS_SECRET=your-secret
-   # ... add other variables
-   ```
-
-3. **Deploy:**
-   ```bash
-   git push heroku main
-   ```
 
 ## 🤝 Contributing
 
@@ -314,9 +257,6 @@ curl -X POST http://localhost:8000/api/v1/auth/login \
    ```
 5. **Open a Pull Request**
 
-## 📝 License
-
-This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
@@ -327,28 +267,11 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 
 ## 📧 Support
 
-For support, email your-email@example.com or create an issue in the repository.
+For support, email jonayeeds@gmail.com or create an issue in the repository.
 
 ---
 
 **Happy Coding! 🎉**
-## An Ai Quiz Generation and participation Web Application
-
-## Live Link
-<a href="https://quizcraft-client.vercel.app/">Demo</a>
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm install
-```
-
-```bash
-npm run dev
-```
 
 
-Open [http://localhost:8000/api/v1](http://localhost:8000/api/v1) with your browser to see the result.
 
